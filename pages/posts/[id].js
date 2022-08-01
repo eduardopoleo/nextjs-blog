@@ -5,8 +5,7 @@ import Date from '../../components/date'
 import utilStyles from '../../styles/utils.module.css'
 import { useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
-import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
-// import {dark} from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 
 export default function Post({ postContent, postData, staticComments }) {
   const [comments, setComments] = useState(staticComments)
@@ -20,7 +19,6 @@ export default function Post({ postContent, postData, staticComments }) {
     commentTextRef.current.value = ''
   }
 
-  // debugger;
   return(
     <Layout>
       <Head>
