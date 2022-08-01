@@ -4,8 +4,11 @@ import Head from 'next/head'
 import Date from '../../components/date'
 import utilStyles from '../../styles/utils.module.css'
 import { useRef, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter'
+// import {dark} from 'react-syntax-highlighter/dist/esm/styles/prism'
 
-export default function Post({ postData, staticComments }) {
+export default function Post({ postContent, postData, staticComments }) {
   const [comments, setComments] = useState(staticComments)
   const [lastCommentId, setLastCommentId] = useState(3)
   const commentTextRef = useRef()
@@ -17,6 +20,7 @@ export default function Post({ postData, staticComments }) {
     commentTextRef.current.value = ''
   }
 
+  // debugger;
   return(
     <Layout>
       <Head>
@@ -28,7 +32,26 @@ export default function Post({ postData, staticComments }) {
           <Date dateString={postData.date} />
         </div>
       </article>
-      <div dangerouslySetInnerHTML={{__html: postData.contentHtml}}/>
+      <ReactMarkdown
+        children={postContent}
+        components={{
+          code({node, inline, className, children, ...props}) {
+            const match = /language-(\w+)/.exec(className || '')
+            return !inline && match ? (
+              <SyntaxHighlighter
+                children={String(children).replace(/\n$/, '')}
+                language={match[1]}
+                PreTag="div"
+                {...props}
+              />
+            ) : (
+              <code className={className} {...props}>
+                {children}
+              </code>
+            )
+          }
+        }}
+      />
       <section>
       <h2>Comments</h2>
         <p>Add Comment</p>
@@ -59,11 +82,12 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const postData = await getPostData(params.id)
+  const postInfo = await getPostData(params.id)
 
   return {
     props: {
-      postData,
+      postData: postInfo.data,
+      postContent: postInfo.content,
       staticComments: [
         { text: 'Hi I love you post keep going', id: 1 },
         { text: 'This is great!', id: 2 },
