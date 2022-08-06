@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^4.1.1",
     "date-fns": "^2.29.1",
     "gray-matter": "^4.0.3",
     "next": "latest",
@@ -15,5 +16,8 @@
     "react-syntax-highlighter": "^15.5.0",
     "remark": "^14.0.2",
     "remark-html": "^15.0.1"
+  },
+  "devDependencies": {
+    "prisma": "^4.1.1"
   }
 }

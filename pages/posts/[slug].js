@@ -1,5 +1,5 @@
 import Layout from '../../components/layout'
-import { getAllPostIds, getPostData } from '../../lib/posts'
+import { getAllPostSlugs, getPostData, getPostComments } from '../../lib/posts'
 import Head from 'next/head'
 import Date from '../../components/date'
 import utilStyles from '../../styles/utils.module.css'
@@ -7,9 +7,8 @@ import { useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 
-export default function Post({ postContent, postData, staticComments }) {
-  const [comments, setComments] = useState(staticComments)
-  const [lastCommentId, setLastCommentId] = useState(3)
+export default function Post({ postContent, postData, staticPostComments, postId }) {
+  const [postComments, setpostComments] = useState(staticPostComments)
   const commentTextRef = useRef()
 
   const addComment = (event) => {
@@ -59,7 +58,7 @@ export default function Post({ postContent, postData, staticComments }) {
 
         <ul>
           {
-            comments && comments.map(comment => {
+            postComments && postComments.map(comment => {
               return <li key={comment.id}>
                 {comment.text}
               </li>
@@ -72,7 +71,7 @@ export default function Post({ postContent, postData, staticComments }) {
 }
 
 export async function getStaticPaths() {
-  const paths = getAllPostIds()
+  const paths = getAllPostSlugs()
   return {
     paths,
     fallback: false
@@ -80,17 +79,15 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const postInfo = await getPostData(params.id)
+  const postInfo = await getPostData(params.slug)
+  const staticPostComments = await getPostComments(postInfo.data.id)
 
   return {
     props: {
+      postId: postInfo.data.id,
       postData: postInfo.data,
       postContent: postInfo.content,
-      staticComments: [
-        { text: 'Hi I love you post keep going', id: 1 },
-        { text: 'This is great!', id: 2 },
-        { text: 'noha loha', id: 3 }
-      ]
+      staticPostComments: staticPostComments
     }
   }
 }
