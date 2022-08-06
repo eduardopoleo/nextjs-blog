@@ -113,6 +113,7 @@ export async function getStaticProps({ params }) {
       postData: postInfo.data,
       postContent: postInfo.content,
       staticPostComments: staticPostComments
-    }
+    },
+    revalidate: 10
   }
 }
