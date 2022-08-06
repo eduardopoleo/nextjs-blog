@@ -10,12 +10,31 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 export default function Post({ postContent, postData, staticPostComments, postId }) {
   const [postComments, setpostComments] = useState(staticPostComments)
   const commentTextRef = useRef()
+  const authorEmailRef = useRef()
 
-  const addComment = (event) => {
-    // Do some async persist in here
-    setLastCommentId(lastCommentId + 1)
-    setComments([{ text: commentTextRef.current.value, id: lastCommentId }, ...comments])
+  const addComment = async event => {
+    event.preventDefault()
+    const body = {
+      postId,
+      text: commentTextRef.current.value,
+      author_email: authorEmailRef.current.value
+    }
+    let response;
+    try {
+      response = await fetch("/api/comments", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+      });
+
+      response = await response.json()
+    } catch (error) {
+      console.log("there was an error submitting", error);
+      return
+    }
+    setpostComments([{ text: response.text, id: response.id }, ...postComments])
     commentTextRef.current.value = ''
+    authorEmailRef.current.value = ''
   }
 
   return(
@@ -52,6 +71,12 @@ export default function Post({ postContent, postData, staticPostComments, postId
       <section>
       <h2>Comments</h2>
         <p>Add Comment</p>
+        <label>Email</label>
+        <br/>
+        <input type="email" ref={authorEmailRef} />
+        <br/>
+        <label>Comment</label>
+        <br/>
         <textarea type='text' ref={commentTextRef} placeholder="Comment Here!"/>
         <br/>
         <button onClick={addComment}>Add Comment</button>
