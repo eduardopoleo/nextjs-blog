@@ -1,4 +1,4 @@
-import getGravatarInfo from 'gravatar'
+import getGravatarInfo from '../../lib/gravatar'
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
