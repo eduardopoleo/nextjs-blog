@@ -85,6 +85,9 @@ export default function Post({ postContent, postData, staticPostComments, postId
           {
             postComments && postComments.map(comment => {
               return <li key={comment.id}>
+                <p>{comment.profileName}</p>
+                <img src={comment.avatarUrl} />
+                <br/>
                 {comment.text}
               </li>
             })
@@ -112,7 +115,7 @@ export async function getStaticProps({ params }) {
       postId: postInfo.data.id,
       postData: postInfo.data,
       postContent: postInfo.content,
-      staticPostComments: staticPostComments
+      staticPostComments: staticPostComments,
     },
     revalidate: 10
   }
