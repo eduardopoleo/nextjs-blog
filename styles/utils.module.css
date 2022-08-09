@@ -50,3 +50,23 @@
 .lightText {
   color: #666;
 }
+
+.commentContainer {
+  display: flex;
+  width: 100%;
+}
+
+.commentProfileImage {
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.commentContent {
+  border: 1px solid #d3d3d3;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.commentDate {
+  font-size: 12px;
+}

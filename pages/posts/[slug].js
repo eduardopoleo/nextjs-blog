@@ -69,7 +69,7 @@ export default function Post({ postContent, postData, staticPostComments, postId
         }}
       />
       <section>
-      <h2>Comments</h2>
+        <h2>Comments</h2>
         <p>Add Comment</p>
         <label>Email</label>
         <br/>
@@ -80,19 +80,19 @@ export default function Post({ postContent, postData, staticPostComments, postId
         <textarea type='text' ref={commentTextRef} placeholder="Comment Here!"/>
         <br/>
         <button onClick={addComment}>Add Comment</button>
-
-        <ul>
-          {
-            postComments && postComments.map(comment => {
-              return <li key={comment.id}>
-                <p>{comment.profileName}</p>
-                <img src={comment.avatarUrl} />
-                <br/>
-                {comment.text}
-              </li>
-            })
-          }
-        </ul>
+        {
+          postComments && postComments.map(comment => {
+            return <div key={comment.id} className={utilStyles.commentContainer}>
+              <img className={utilStyles.commentProfileImage} width="40" height="40" src={comment.avatarUrl} />
+              <div className={utilStyles.commentContent}>
+                <div>
+                  <span>{comment.profileName}</span> <span>•</span> <span className={utilStyles.commentDate}><Date dateString={comment.createdAt} /> </span>
+                </div>
+                <p>{comment.text}</p>
+              </div>
+            </div>
+          })
+        }
       </section>
     </Layout>
   )
