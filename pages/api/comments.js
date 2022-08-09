@@ -1,4 +1,5 @@
 import prisma from '../../lib/prisma'
+import getGravatarInfo from '../../lib/gravatar'
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -20,7 +21,11 @@ async function createComment(req, res) {
       }
     })
 
-    return res.status(200).json(newComment, { success: true })
+    let gravatarInfo = await getGravatarInfo(data.author_email)
+
+    const body = { ...newComment, ...gravatarInfo }
+
+    return res.status(200).json(body, { success: true })
   } catch (error) {
     console.error("Request Error", error)
     res.status(500).json({ error: "Error creating comment", success:false });

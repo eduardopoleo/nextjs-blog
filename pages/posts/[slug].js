@@ -19,20 +19,20 @@ export default function Post({ postContent, postData, staticPostComments, postId
       text: commentTextRef.current.value,
       author_email: authorEmailRef.current.value
     }
-    let response;
+    let newComment;
     try {
-      response = await fetch("/api/comments", {
+      newComment = await fetch("/api/comments", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body),
       });
 
-      response = await response.json()
+      newComment = await newComment.json()
     } catch (error) {
       console.log("there was an error submitting", error);
       return
     }
-    setpostComments([{ text: response.text, id: response.id }, ...postComments])
+    setpostComments([newComment, ...postComments])
     commentTextRef.current.value = ''
     authorEmailRef.current.value = ''
   }
