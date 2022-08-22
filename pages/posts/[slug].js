@@ -7,7 +7,7 @@ import { useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 
-export default function Post({ postContent, postData, staticPostComments, postId }) {
+export default function Post({ postContent, postData, postCoverImage, staticPostComments, postId }) {
   const [postComments, setpostComments] = useState(staticPostComments)
   const commentTextRef = useRef()
   const authorEmailRef = useRef()
@@ -39,6 +39,7 @@ export default function Post({ postContent, postData, staticPostComments, postId
 
   return(
     <Layout>
+      <img src={`/images/${postCoverImage}`}></img>
       <Head>
         <title>{postData.title}</title>
       </Head>
@@ -116,6 +117,7 @@ export async function getStaticProps({ params }) {
       postId: postInfo.data.id,
       postData: postInfo.data,
       postContent: postInfo.content,
+      postCoverImage: postInfo.data.coverImage,
       staticPostComments: staticPostComments,
     },
     revalidate: 10
