@@ -70,23 +70,24 @@ export default function Post({ postContent, postData, staticPostComments, postId
       />
       <section>
         <h2>Comments</h2>
-        <p>Add Comment</p>
-        <label>Email</label>
-        <br/>
-        <input type="email" ref={authorEmailRef} />
-        <br/>
-        <label>Comment</label>
-        <br/>
-        <textarea type='text' ref={commentTextRef} placeholder="Comment Here!"/>
-        <br/>
-        <button onClick={addComment}>Add Comment</button>
+        <div className={utilStyles.addCommentBox}>
+          <label className={utilStyles.formControlLabel}>Email</label>
+          <br/>
+          <input type="email" ref={authorEmailRef} className={utilStyles.emailInput} />
+          <br/>
+          <label className={utilStyles.formControlLabel}>Comment</label>
+          <br/>
+          <textarea type='text' ref={commentTextRef} className={utilStyles.commentTextArea}/>
+          <br/>
+          <button className={utilStyles.commentSubmitButton} onClick={addComment}>Add Comment</button>
+        </div>
         {
           postComments && postComments.map(comment => {
             return <div key={comment.id} className={utilStyles.commentContainer}>
               <img className={utilStyles.commentProfileImage} width="40" height="40" src={comment.avatarUrl} />
               <div className={utilStyles.commentContent}>
-                <div>
-                  <span>{comment.profileName}</span> <span>•</span> <span className={utilStyles.commentDate}><Date dateString={comment.createdAt} /> </span>
+                <div className={utilStyles.commentHeader}>
+                  <span className={utilStyles.commentorName}>{comment.profileName}</span> <span className={utilStyles.commentDateSeparator}>•</span> <span className={utilStyles.commentDate}><Date dateString={comment.createdAt} /> </span>
                 </div>
                 <p>{comment.text}</p>
               </div>
